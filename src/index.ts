@@ -1,4 +1,7 @@
 // let's count what they just wrote
+import chalk from 'chalk';
+import figlet from 'figlet';
+import gradient from 'gradient-string';
 import inquirer from 'inquirer';
 
 
@@ -28,8 +31,8 @@ class InitApp {
                 {
                     type: 'input',
                     name: 'topic',
-                    message: 'What\'s your today topic?: ',
-                    default: 'My favourite hobbies' 
+                    message: chalk.bgCyan('What\'s your today topic?: '),
+                    default: chalk.yellow('My favourite hobbies') 
                 }
             ]).then(({topic}) => {
                 if(topic) {
@@ -37,13 +40,13 @@ class InitApp {
                         {
                             type: 'input',
                             name: 'paras',
-                            message: `start writing on "${topic.trim()}": `
+                            message: chalk.bgGreen(`start writing on "${chalk.green(topic.trim())}": `)
                         }
                     ]).then(({paras}: {paras: string}) => {
                         console.log(paras);
                         const letterLength = letter.getLetterLength(paras)
                         const wordLength = word.getWordLength(paras);
-                        console.log(`______________\n\nYour paragraph contains ${letterLength} letters and ${wordLength} words.`);
+                        console.log(chalk.blue(`______________\n\nYour paragraph contains ${chalk.bold.magenta(letterLength)} letters and ${chalk.bold.magenta(wordLength)} words.`));
                         console.log('______________')
                     })
                 }
@@ -51,4 +54,16 @@ class InitApp {
         }
 }
 
-new InitApp(new Word, new Letter);
+
+figlet.text('Text-Counter!', {
+    horizontalLayout: 'default',
+    verticalLayout: 'default',
+    width: 120,
+    whitespaceBreak: true
+}, ((err, data) => {
+    if(err) {console.log(err)}
+    console.log('\n')
+    console.log(gradient.rainbow(data))
+    console.log('\n')
+    new InitApp(new Word, new Letter);
+}));
